@@ -2,9 +2,9 @@
 
 programs=("zsh" "tmux" "vim" "git" "curl" "python3")
 
-dir="~/dotfiles"
+dir="~/quan-monorepo/dotfiles"
 olddir="~/dotfiles_old"
-files="zshrc vimrc vim oh-my-zsh"
+files="zshrc vimrc p10k.zsh tmux.conf"
 
 # Helper functions
 install_program() {
@@ -88,22 +88,35 @@ if [[ "$SHELL" != "/bin/zsh" ]]; then
     echo "...done"
 fi
 
-# # Create dotfiles_old in ~
-# echo "Creating $olddir for backup of any existing dotfiles in ~"
-# mkdir -p $olddir
-# echo "...done"
+# Create dotfiles_old in ~
+echo "Creating $olddir for backup of any existing dotfiles in ~"
+mkdir -p $olddir
+echo "...done"
 
-# # Move to dotfiles directory
-# echo "Move to $dir directory"
-# cd $dir
-# echo "...done"
+# Move to dotfiles directory
+echo "Move to $dir directory"
+cd $dir
+echo "...done"
 
-# # Move existing dotfiles to old directory, then create symlinks
-# for file in $files; do
-#     if [ -f "~/.$file" ]; then
-#         echo "Moving existing .$file from ~ to $olddir"
-#         mv ~/.$file $olddir
-#     fi
-#     echo "Creating symlink to $file in ~"
-#     ln -s $dir/$file ~/.$file
-# done
+# Move existing dotfiles to old directory, then create symlinks
+for file in $files; do
+    if [[ -f "~/.$file" ]]; then
+        echo "Moving existing .$file from ~ to $olddir"
+        mv ~/.$file $olddir
+    fi
+    echo "Creating symlink to $file in ~"
+    ln -s $dir/$file ~/.$file
+done
+
+# Moving for oh-my-zsh
+if [[ -d "~/.oh-my-zsh" ]]; then
+  echo "An existing oh-my-zsh installation detected."
+else
+  echo "Installing oh-my-zsh..."
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  echo "...done"
+fi
+echo "Moving custom themes and plugins to oh-my-zsh."
+mv ~/.oh-my-zsh/custom ~/.oh-my-zsh/custom_old
+ln -s $dir/oh-my-zsh/custom ~/.oh-my-zsh/custom
+echo "...done"

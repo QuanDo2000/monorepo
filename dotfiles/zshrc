@@ -1,0 +1,10 @@
+ZSH_THEME="agnoster"
+
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+
+# Auto Start tmux
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+	if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
+		tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux
+	fi
+fi

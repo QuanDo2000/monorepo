@@ -1,0 +1,2 @@
+# Enable vim keys
+set-window-option -g mode-keys vi

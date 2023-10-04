@@ -1,10 +1,10 @@
 #!/bin/bash
 
-programs=("zsh" "tmux" "vim" "git" "curl" "python3")
+programs=("zsh" "tmux" "vim" "git" "curl" "awk" "perl" "sed")
 
 dir="~/quan-monorepo/dotfiles"
 olddir="~/dotfiles_old"
-files="zshrc vimrc p10k.zsh tmux.conf"
+files="zshrc vimrc p10k.zsh tmux.conf.local"
 
 # Helper functions
 install_program() {
@@ -98,6 +98,28 @@ echo "Move to $dir directory"
 cd $dir
 echo "...done"
 
+# Installing for oh-my-zsh. This needs to go before the links.
+if [[ -d "~/.oh-my-zsh" ]]; then
+  echo "An existing oh-my-zsh installation detected."
+else
+  echo "Installing oh-my-zsh..."
+  # https://github.com/ohmyzsh/ohmyzsh/wiki
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  # https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  # https://github.com/romkatv/powerlevel10k#installation
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+  echo "...done"
+fi
+
+# Installing Oh My Tmux.
+# https://github.com/gpakosz/.tmux
+cd $HOME
+git clone https://github.com/gpakosz/.tmux.git
+ln -s -f .tmux/.tmux.conf
+
 # Move existing dotfiles to old directory, then create symlinks
 for file in $files; do
     if [[ -f "~/.$file" ]]; then
@@ -107,16 +129,3 @@ for file in $files; do
     echo "Creating symlink to $file in ~"
     ln -s $dir/$file ~/.$file
 done
-
-# Moving for oh-my-zsh
-if [[ -d "~/.oh-my-zsh" ]]; then
-  echo "An existing oh-my-zsh installation detected."
-else
-  echo "Installing oh-my-zsh..."
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  echo "...done"
-fi
-echo "Moving custom themes and plugins to oh-my-zsh."
-mv ~/.oh-my-zsh/custom ~/.oh-my-zsh/custom_old
-ln -s $dir/oh-my-zsh/custom ~/.oh-my-zsh/custom
-echo "...done"

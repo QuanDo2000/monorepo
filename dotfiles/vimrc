@@ -59,13 +59,9 @@ inoremap jk <esc>  " jk for ESC
 nnoremap <leader>w :w!<CR>  " <leader>w to save file
 nnoremap <leader>/ :nohl<CR>  " <leader>/ turn off highlight when searching
 
-" " Status line settings
-" set statusline=  " Clear status line when vimrc is reloaded
-" set statusline+=%<%f%h%m%r  " Status line left side
-" set statusline+=%=  " Divider left side and right side
-" set statusline+=\ ascii:\ %b\ hex:\ 0x%B\ \ %l,%c%V\ \ %p%%  " Status line right side
-" set laststatus=2  " Show status line
-
+" Status line settings
+set statusline=  " Clear status line when vimrc is reloaded
+set laststatus=2  " Show status line
 " Powerline settings
 python3 import sys;sys.path.append("/home/quan/.pyenv/versions/3.10.6/lib/python3.10/site-packages/")
 python3 from powerline.vim import setup as powerline_setup

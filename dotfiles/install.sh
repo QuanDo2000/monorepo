@@ -1,10 +1,10 @@
 #!/bin/bash
 
-programs=("zsh" "tmux" "vim" "git" "curl" "python3")
+programs=("zsh" "tmux" "vim" "git" "curl" "awk" "perl" "sed")
 
-dir="~/dotfiles"
+dir="~/quan-monorepo/dotfiles"
 olddir="~/dotfiles_old"
-files="zshrc vimrc vim oh-my-zsh"
+files="zshrc vimrc p10k.zsh tmux.conf.local"
 
 # Helper functions
 install_program() {
@@ -88,22 +88,44 @@ if [[ "$SHELL" != "/bin/zsh" ]]; then
     echo "...done"
 fi
 
-# # Create dotfiles_old in ~
-# echo "Creating $olddir for backup of any existing dotfiles in ~"
-# mkdir -p $olddir
-# echo "...done"
+# Create dotfiles_old in ~
+echo "Creating $olddir for backup of any existing dotfiles in ~"
+mkdir -p $olddir
+echo "...done"
 
-# # Move to dotfiles directory
-# echo "Move to $dir directory"
-# cd $dir
-# echo "...done"
+# Move to dotfiles directory
+echo "Move to $dir directory"
+cd $dir
+echo "...done"
 
-# # Move existing dotfiles to old directory, then create symlinks
-# for file in $files; do
-#     if [ -f "~/.$file" ]; then
-#         echo "Moving existing .$file from ~ to $olddir"
-#         mv ~/.$file $olddir
-#     fi
-#     echo "Creating symlink to $file in ~"
-#     ln -s $dir/$file ~/.$file
-# done
+# Installing for oh-my-zsh. This needs to go before the links.
+if [[ -d "~/.oh-my-zsh" ]]; then
+  echo "An existing oh-my-zsh installation detected."
+else
+  echo "Installing oh-my-zsh..."
+  # https://github.com/ohmyzsh/ohmyzsh/wiki
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  # https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  # https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  # https://github.com/romkatv/powerlevel10k#installation
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+  echo "...done"
+fi
+
+# Installing Oh My Tmux.
+# https://github.com/gpakosz/.tmux
+cd $HOME
+git clone https://github.com/gpakosz/.tmux.git
+ln -s -f .tmux/.tmux.conf
+
+# Move existing dotfiles to old directory, then create symlinks
+for file in $files; do
+    if [[ -f "~/.$file" ]]; then
+        echo "Moving existing .$file from ~ to $olddir"
+        mv ~/.$file $olddir
+    fi
+    echo "Creating symlink to $file in ~"
+    ln -s $dir/$file ~/.$file
+done

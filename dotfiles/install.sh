@@ -20,10 +20,10 @@ install_program() {
         case "$distribution" in
             "ubuntu" | "debian")
                 sudo apt update
-                sudo apt install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libffi-dev libxml2-dev libxmlsec1-dev liblzma-dev tk-dev
+                sudo apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libffi-dev libxml2-dev libxmlsec1-dev liblzma-dev tk-dev
                 ;;
             "arch")
-                sudo pacman -S base-devel openssl zlib bzip2 readline sqlite libffi libxml2 libxmlsec xz tk
+                sudo pacman -S --no-confirm base-devel openssl zlib bzip2 readline sqlite libffi libxml2 libxmlsec xz tk
                 ;;
             *)
                 echo "Unsupported Linux distro: $distribution."
@@ -36,10 +36,10 @@ install_program() {
     case "$distribution" in
         "ubuntu" | "debian")
             sudo apt update
-            sudo apt install "$program"
+            sudo apt install -y "$program"
             ;;
         "arch")
-            sudo pacman -S "$program"
+            sudo pacman -S --no-confirm "$program"
             ;;
         *)
             echo "Unsupported Linux distro: $distribution."
@@ -88,10 +88,10 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     for program in "${programs[@]}"; do
         if ! check_program "$program"; then
             echo "Installing $program..."
-            brew install "$program"
+            brew install --yes "$program"
         fi
         if [ "$program" = "build_essentials" ]; then
-            brew install openssl zlib readline sqlite libffi libxml2 libxmlsec xz python-tk
+            brew install --yes openssl zlib readline sqlite libffi libxml2 libxmlsec xz python-tk
         fi
     done
 else

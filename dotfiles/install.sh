@@ -181,3 +181,4 @@ for folder in config_folders; do
     fi
     echo "Creating symlink to $folder in ~/.config"
     ln -s $dir/$folder ~/.config/$folder
+done

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-programs=("zsh" "tmux" "vim" "git" "curl" "awk" "perl" "sed" "python3")
+programs=("build_essentials" "zsh" "tmux" "vim" "git" "curl" "awk" "perl" "sed" "pyenv")
 
 dir=~/quan-monorepo/dotfiles
 olddir=~/dotfiles_old
@@ -10,6 +10,29 @@ files="zshrc vimrc p10k.zsh tmux.conf.local gitconfig"
 install_program() {
     local distribution="$1"
     local program="$2"
+
+    if [ "$program" = "pyenv" ]; then
+        curl https://pyenv.run | bash
+        return 0
+    fi
+
+    if [ "$program" = "build_essentials" ]; then
+        case "$distribution" in
+            "ubuntu" | "debian")
+                sudo apt update
+                sudo apt install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libffi-dev libxml2-dev libxmlsec1-dev liblzma-dev tk-dev
+                ;;
+            "arch")
+                sudo pacman -S base-devel openssl zlib bzip2 readline sqlite libffi libxml2 libxmlsec xz tk
+                ;;
+            *)
+                echo "Unsupported Linux distro: $distribution."
+                return 1
+                ;;
+        esac
+        return 0
+    fi
+
     case "$distribution" in
         "ubuntu" | "debian")
             sudo apt update
@@ -61,10 +84,14 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     fi
 
     # Install programs
+    brew update
     for program in "${programs[@]}"; do
         if ! check_program "$program"; then
             echo "Installing $program..."
             brew install "$program"
+        fi
+        if [ "$program" = "build_essentials" ]; then
+            brew install openssl zlib readline sqlite libffi libxml2 libxmlsec xz python-tk
         fi
     done
 else
@@ -113,6 +140,19 @@ cd $HOME
 git clone https://github.com/gpakosz/.tmux.git
 ln -s -f .tmux/.tmux.conf
 
+# Install python from pyenv.
+if command -v pyenv &>/dev/null; then
+    echo "pyenv is installed. Installing the latest Python version..."
+    latest_python_version=$(pyenv install --list | grep -E '^\s*[0-9]+\.[0-9]+\.[0-9]+\s*$' | tail -n 1 | sed -e 's/^\s*//' -e 's/\s*$//')
+    echo "Installing the latest Python version: $latest_python_version"
+    pyenv install "$latest_python_version"
+
+    # Set the global Python version
+    pyenv global "$latest_python_version"
+
+    echo "Python $latest_python_version is installed and set as the global version."
+fi
+
 # Move existing dotfiles to old directory, then create symlinks
 for file in $files; do
     if [[ -f ~/.$file ]]; then
@@ -122,3 +162,5 @@ for file in $files; do
     echo "Creating symlink to $file in ~"
     ln -s $dir/$file ~/.$file
 done
+
+exec zsh

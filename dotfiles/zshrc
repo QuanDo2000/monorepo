@@ -25,9 +25,11 @@ plugins=(git vi-mode vscode tmux zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 # Alias
+alias python=python3
 alias py=python
 alias pip=pip3
 
-# Definitions
+# Environment variables
+export EDITOR=vim
 
 # PATHs

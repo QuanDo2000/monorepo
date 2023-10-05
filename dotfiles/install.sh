@@ -144,12 +144,6 @@ else
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 fi
 
-# Installing tpm and tmux-powerline.
-# https://github.com/tmux-plugins/tpm
-# https://github.com/QuanDo1Byte/quan-monorepo
-cd $HOME
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
 # Install python from pyenv.
 if command -v pyenv &>/dev/null; then
     echo "pyenv is installed. Installing the latest Python version..."

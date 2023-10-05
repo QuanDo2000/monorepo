@@ -4,7 +4,8 @@ programs=("build_essentials" "zsh" "tmux" "vim" "git" "curl" "awk" "perl" "sed" 
 
 dir=~/quan-monorepo/dotfiles
 olddir=~/dotfiles_old
-files="zshrc vimrc p10k.zsh tmux.conf.local gitconfig"
+files="zshrc vimrc p10k.zsh tmux.conf gitconfig"
+config_folders="tmux-powerline"
 
 # Helper functions
 install_program() {
@@ -86,12 +87,13 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     # Install programs
     brew update
     for program in "${programs[@]}"; do
+        if [ "$program" = "build_essentials" ]; then
+            brew install openssl readline xz python-tk
+            continue
+        fi
         if ! check_program "$program"; then
             echo "Installing $program..."
-            brew install --yes "$program"
-        fi
-        if [ "$program" = "build_essentials" ]; then
-            brew install --yes openssl zlib readline sqlite libffi libxml2 libxmlsec xz python-tk
+            brew install "$program"
         fi
     done
 else
@@ -142,11 +144,11 @@ else
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 fi
 
-# Installing Oh My Tmux.
-# https://github.com/gpakosz/.tmux
+# Installing tpm and tmux-powerline.
+# https://github.com/tmux-plugins/tpm
+# https://github.com/QuanDo1Byte/quan-monorepo
 cd $HOME
-git clone https://github.com/gpakosz/.tmux.git
-ln -s -f .tmux/.tmux.conf
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Install python from pyenv.
 if command -v pyenv &>/dev/null; then
@@ -171,4 +173,11 @@ for file in $files; do
     ln -s $dir/$file ~/.$file
 done
 
-exec zsh
+# Move config folders to .config
+for folder in config_folders; do
+    if [[ -d ~/.config/$folder ]]; then
+        echo "Moving existing $folder from ~/.config to $olddir"
+        mv ~/.config/$folder $olddir
+    fi
+    echo "Creating symlink to $folder in ~/.config"
+    ln -s $dir/$folder ~/.config/$folder

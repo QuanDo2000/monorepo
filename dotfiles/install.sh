@@ -110,6 +110,14 @@ if [[ "$SHELL" != /bin/zsh ]]; then
     fi
 fi
 
+# Clone the repository to ~
+if [[ -d ~/quan-monorepo ]]; then
+    echo "An existing quan-monorepo directory detected."
+else
+    echo "Cloning quan-monorepo..."
+    git clone https://github.com/QuanDo2000/quan-monorepo.git
+fi
+
 # Create dotfiles_old in ~
 echo "Creating $olddir for backup of any existing dotfiles in ~"
 mkdir -p $olddir

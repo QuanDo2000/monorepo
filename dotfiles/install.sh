@@ -88,7 +88,8 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     brew update
     for program in "${programs[@]}"; do
         if [ "$program" = "build_essentials" ]; then
-            brew install openssl readline xz python-tk
+            brew install openssl readline xz python-tk gnu-sed
+            export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH" # sed on Mac is different from sed on Linux
             continue
         fi
         if ! check_program "$program"; then
@@ -146,15 +147,19 @@ fi
 
 # Install python from pyenv.
 if command -v pyenv &>/dev/null; then
-    echo "pyenv is installed. Installing the latest Python version..."
-    latest_python_version=$(pyenv install --list | grep -E '^\s*[0-9]+\.[0-9]+\.[0-9]+\s*$' | tail -n 1 | sed -e 's/^\s*//' -e 's/\s*$//')
-    echo "Installing the latest Python version: $latest_python_version"
-    pyenv install "$latest_python_version"
+    if ! command -v python &> /dev/null; then
+        echo "pyenv is installed. Installing the latest Python version..."
+        latest_python_version=$(pyenv install --list | grep -E '^\s*[0-9]+\.[0-9]+\.[0-9]+\s*$' | tail -n 1 | sed -e 's/^\s*//' -e 's/\s*$//')
+        echo "Installing the latest Python version: $latest_python_version"
+        pyenv install "$latest_python_version"
 
-    # Set the global Python version
-    pyenv global "$latest_python_version"
+        # Set the global Python version
+        pyenv global "$latest_python_version"
 
-    echo "Python $latest_python_version is installed and set as the global version."
+        echo "Python $latest_python_version is installed and set as the global version."
+    else
+        echo "Python is installed."
+    fi
 fi
 
 # Move existing dotfiles to old directory, then create symlinks

@@ -38,16 +38,30 @@ set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx  " 
 
 " Plugins
 
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')  " Download plugins to directory
 
 " List of plugins
 Plug 'joshdick/onedark.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 
 call plug#end()
 
+let g:airline_theme='onedark'
 colorscheme onedark
 
 " Key mappings
@@ -58,12 +72,3 @@ let mapleader = " "
 inoremap jk <esc>  " jk for ESC
 nnoremap <leader>w :w!<CR>  " <leader>w to save file
 nnoremap <leader>/ :nohl<CR>  " <leader>/ turn off highlight when searching
-
-" Status line settings
-set statusline=  " Clear status line when vimrc is reloaded
-set laststatus=2  " Show status line
-" Powerline settings
-python3 import sys;sys.path.append("/home/quan/.pyenv/versions/3.10.6/lib/python3.10/site-packages/")
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup

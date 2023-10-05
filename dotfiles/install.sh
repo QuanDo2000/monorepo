@@ -4,7 +4,7 @@ programs=("zsh" "tmux" "vim" "git" "curl" "awk" "perl" "sed" "python3")
 
 dir=~/quan-monorepo/dotfiles
 olddir=~/dotfiles_old
-files="zshrc vimrc p10k.zsh tmux.conf.local"
+files="zshrc vimrc p10k.zsh tmux.conf.local gitconfig"
 
 # Helper functions
 install_program() {

@@ -173,7 +173,7 @@ for file in $files; do
 done
 
 # Move config folders to .config
-for folder in config_folders; do
+for folder in "${config_folders[@]}"; do
     if [[ -d ~/.config/$folder ]]; then
         echo "Moving existing $folder from ~/.config to $olddir"
         mv ~/.config/$folder $olddir

@@ -164,20 +164,31 @@ fi
 
 # Move existing dotfiles to old directory, then create symlinks
 for file in $files; do
-    if [[ -f ~/.$file ]]; then
-        echo "Moving existing .$file from ~ to $olddir"
-        mv ~/.$file $olddir
+    if [[ ! -h ~/.$file ]]; then
+        if [[ -f ~/.$file ]]; then
+            echo "Moving existing .$file from ~ to $olddir"
+            mv ~/.$file $olddir
+        fi
+        echo "Creating symlink to $file in ~"
+        ln -s $dir/$file ~/.$file
+    else
+        echo "$file is a symlink."
     fi
-    echo "Creating symlink to $file in ~"
-    ln -s $dir/$file ~/.$file
 done
 
 # Move config folders to .config
 for folder in "${config_folders[@]}"; do
-    if [[ -d ~/.config/$folder ]]; then
-        echo "Moving existing $folder from ~/.config to $olddir"
-        mv ~/.config/$folder $olddir
+    if [[ ! -d !/.config ]]; then
+        mkdir -p ~/.config
     fi
-    echo "Creating symlink to $folder in ~/.config"
-    ln -s $dir/$folder ~/.config/$folder
+    if [[ ! -h ~/.config/$folder ]]; then
+        if [[ -d ~/.config/$folder ]]; then
+            echo "Moving existing $folder from ~/.config to $olddir"
+            mv ~/.config/$folder $olddir
+        fi
+        echo "Creating symlink to $folder in ~/.config"
+        ln -s $dir/$folder ~/.config/$folder
+    else
+        echo "~/.config/$folder is a symlink"
+    fi
 done

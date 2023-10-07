@@ -4,7 +4,8 @@ programs=("build_essentials" "zsh" "tmux" "vim" "git" "curl" "awk" "perl" "sed" 
 
 dir=~/quan-monorepo/dotfiles
 olddir=~/dotfiles_old
-files="zshrc vimrc p10k.zsh tmux.conf.local gitconfig"
+files="zshrc vimrc p10k.zsh tmux.conf gitconfig"
+config_folders="tmux-powerline"
 
 # Helper functions
 install_program() {
@@ -86,12 +87,14 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     # Install programs
     brew update
     for program in "${programs[@]}"; do
+        if [ "$program" = "build_essentials" ]; then
+            brew install openssl readline xz python-tk gnu-sed
+            export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH" # sed on Mac is different from sed on Linux
+            continue
+        fi
         if ! check_program "$program"; then
             echo "Installing $program..."
-            brew install --yes "$program"
-        fi
-        if [ "$program" = "build_essentials" ]; then
-            brew install --yes openssl zlib readline sqlite libffi libxml2 libxmlsec xz python-tk
+            brew install "$program"
         fi
     done
 else
@@ -142,33 +145,50 @@ else
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 fi
 
-# Installing Oh My Tmux.
-# https://github.com/gpakosz/.tmux
-cd $HOME
-git clone https://github.com/gpakosz/.tmux.git
-ln -s -f .tmux/.tmux.conf
-
 # Install python from pyenv.
 if command -v pyenv &>/dev/null; then
-    echo "pyenv is installed. Installing the latest Python version..."
-    latest_python_version=$(pyenv install --list | grep -E '^\s*[0-9]+\.[0-9]+\.[0-9]+\s*$' | tail -n 1 | sed -e 's/^\s*//' -e 's/\s*$//')
-    echo "Installing the latest Python version: $latest_python_version"
-    pyenv install "$latest_python_version"
+    if ! command -v python &> /dev/null; then
+        echo "pyenv is installed. Installing the latest Python version..."
+        latest_python_version=$(pyenv install --list | grep -E '^\s*[0-9]+\.[0-9]+\.[0-9]+\s*$' | tail -n 1 | sed -e 's/^\s*//' -e 's/\s*$//')
+        echo "Installing the latest Python version: $latest_python_version"
+        pyenv install "$latest_python_version"
 
-    # Set the global Python version
-    pyenv global "$latest_python_version"
+        # Set the global Python version
+        pyenv global "$latest_python_version"
 
-    echo "Python $latest_python_version is installed and set as the global version."
+        echo "Python $latest_python_version is installed and set as the global version."
+    else
+        echo "Python is installed."
+    fi
 fi
 
 # Move existing dotfiles to old directory, then create symlinks
 for file in $files; do
-    if [[ -f ~/.$file ]]; then
-        echo "Moving existing .$file from ~ to $olddir"
-        mv ~/.$file $olddir
+    if [[ ! -h ~/.$file ]]; then
+        if [[ -f ~/.$file ]]; then
+            echo "Moving existing .$file from ~ to $olddir"
+            mv ~/.$file $olddir
+        fi
+        echo "Creating symlink to $file in ~"
+        ln -s $dir/$file ~/.$file
+    else
+        echo "$file is a symlink."
     fi
-    echo "Creating symlink to $file in ~"
-    ln -s $dir/$file ~/.$file
 done
 
-exec zsh
+# Move config folders to .config
+for folder in "${config_folders[@]}"; do
+    if [[ ! -d !/.config ]]; then
+        mkdir -p ~/.config
+    fi
+    if [[ ! -h ~/.config/$folder ]]; then
+        if [[ -d ~/.config/$folder ]]; then
+            echo "Moving existing $folder from ~/.config to $olddir"
+            mv ~/.config/$folder $olddir
+        fi
+        echo "Creating symlink to $folder in ~/.config"
+        ln -s $dir/$folder ~/.config/$folder
+    else
+        echo "~/.config/$folder is a symlink"
+    fi
+done

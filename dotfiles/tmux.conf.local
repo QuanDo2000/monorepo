@@ -1,5 +1,0 @@
-# Enable vim keys
-set-window-option -g mode-keys vi
-
-# Set default shell to zsh
-set-option -g default-shell /usr/bin/zsh

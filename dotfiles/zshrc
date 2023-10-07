@@ -33,6 +33,7 @@ alias py=python
 alias pip=pip3
 
 # Environment variables
+export SHELL=$(which zsh)
 export EDITOR=vim
 export PYENV_ROOT="$HOME/.pyenv"
 

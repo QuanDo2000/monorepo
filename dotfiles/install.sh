@@ -164,7 +164,7 @@ fi
 
 # Move existing dotfiles to old directory, then create symlinks
 for file in $files; do
-    if [[ ! -h ~/.$file ]]; then
+    if [[ ! -h ~/.$file ]] && [[ "$(readlink -f "~/.$file")" ]]; then
         if [[ -f ~/.$file ]]; then
             echo "Moving existing .$file from ~ to $olddir"
             mv ~/.$file $olddir

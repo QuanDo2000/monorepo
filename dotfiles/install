@@ -27,20 +27,21 @@ function install_font {
 }
 
 function install_arch {
-    sudo pacman -S \
-        curl git zsh vim tmux fzf ttf-firacode-nerf
+    sudo pacman -S --no-confirm \
+        curl git zsh vim tmux fontconfig fzf ttf-firacode-nerf
 }
 
 function install_debian {
     sudo apt update
-    sudo apt install \
-        curl git zsh vim tmux fzf
+    sudo apt install -y \
+        curl git zsh vim tmux fontconfig fzf
 
     install_font
 }
 
 function install_mac {
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    brew update
     brew install tmux iterm2
 }
 

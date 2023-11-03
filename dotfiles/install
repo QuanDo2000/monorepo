@@ -91,6 +91,16 @@ function install_oh_my_zsh {
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 }
 
+function install_vim_plugins {
+    info "Installing vim plugins"
+    # Install vim-plug
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    # Install vim plugins
+    vim +PlugInstall +qall
+    success "Finished installing vim plugins"
+}
+
 function install_zsh_plugins {
     info "Installing zsh plugins"
     # Install zsh-autosuggestions
@@ -113,6 +123,7 @@ function install_tmux_plugins {
 function install_extras {
     info "Installing extras"
     install_oh_my_zsh
+    install_vim_plugins
     install_zsh_plugins
     install_tmux_plugins
     success "Finished installing extras"

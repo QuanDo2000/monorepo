@@ -27,15 +27,12 @@ function install_font {
 }
 
 function install_arch {
-    sudo pacman -S --no-confirm \
-        curl git zsh vim tmux fontconfig fzf ttf-firacode-nerf
+    sudo pacman -S --no-confirm curl git zsh vim tmux fontconfig fzf ttf-firacode-nerf
 }
 
 function install_debian {
     sudo apt update -y
-    sudo apt install -y \
-        curl git zsh vim tmux fontconfig fzf
-
+    sudo apt install -y curl git zsh vim tmux fontconfig fzf
     install_font
 }
 

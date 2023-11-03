@@ -15,14 +15,6 @@ set -g @plugin 'erikw/tmux-powerline'
 # set -g @plugin 'git@github.com:user/plugin'
 # set -g @plugin 'git@bitbucket.com:user/plugin'
 
-# Installing tpm and plugins as needed.
-# https://github.com/tmux-plugins/tpm
-if "test ! -d ~/.tmux/plugins/tpm" \
-   "run 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins'"
-
-# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
-run '~/.tmux/plugins/tpm/tpm'
-
 if-shell "uname | grep -q Darwin" {
   bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel 'reattach-to-user-namespace pbcopy'
   bind-key -T copy-mode-vi Enter send -X copy-pipe-and-cancel 'reattach-to-user-namespace pbcopy'
@@ -30,3 +22,11 @@ if-shell "uname | grep -q Darwin" {
   bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
   bind-key -T copy-mode-vi Enter send -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
 }
+
+# Installing tpm and plugins as needed.
+# https://github.com/tmux-plugins/tpm
+if "test ! -d ~/.tmux/plugins/tpm" \
+   "run 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins'"
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'

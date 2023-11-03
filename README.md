@@ -5,5 +5,5 @@
 Contained within `dotfiles` are my personal setup scripts for a new machine. To install, run the following:
 
 ```bash
-source <(curl -s https://raw.githubusercontent.com/QuanDo2000/quan-monorepo/main/dotfiles/install)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/QuanDo2000/quan-monorepo/main/dotfiles/install)"
 ```

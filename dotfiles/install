@@ -73,6 +73,7 @@ function install_packages {
     else
         fail "Unsupported system: $(uname)"
     fi
+    chsh -s $(which zsh)
     success "Finished installing packages"
 }
 

@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/QuanDo2000/quan-monorepo/main/dotfiles/install | bash
+source <(curl -s https://raw.githubusercontent.com/QuanDo2000/quan-monorepo/main/dotfiles/install)
 ```
 
 ## References

@@ -81,8 +81,6 @@ function clone_repo {
     info "Cloning dotfiles repo"
     cd ~
     git clone https://github.com/QuanDo2000/monorepo.git
-    cd monorepo
-    DOTFILES_ROOT=$(pwd -P)
     success "Finished cloning dotfiles repo"
 }
 
@@ -191,10 +189,11 @@ function link_files {
 
 function setup_symlinks {
     info "Setting up symlinks"
+    DOTFILES_ROOT="$HOME/monorepo/dotfiles/unix"
     local overwrite_all=false backup_all=false skip_all=false
 
     for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink'); do
-        echo $src
+        info $src
         dst="$HOME/.$(basename "${src%.*}")"
         link_files "$src" "$dst"
     done

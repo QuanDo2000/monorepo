@@ -71,7 +71,7 @@ function CloneRepo() {
 
 function SyncSettings() {
     Write-Host "Syncing settings..."
-    $configPath = "$HOME\Documents\Projects\monorepo\dotfiles"
+    $configPath = "$HOME\Documents\Projects\monorepo\dotfiles\windows"
 
     $targets = @(
         "$HOME\Documents\WindowsPowerShell"
@@ -86,7 +86,7 @@ function SyncSettings() {
 
     foreach ($target in $targets) {
         Write-Host "Syncing to $target..."
-        Get-ChildItem -Path $configPath\windows\Powershell -File | ForEach-Object {
+        Get-ChildItem -Path $configPath\Powershell -File | ForEach-Object {
             $file = $_
             $filename = $_.Name
             $destination = "$target\$filename"
@@ -96,12 +96,12 @@ function SyncSettings() {
 
     Write-Host "Syncing Terminal settings..."
     $terminalSettingsPath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
-    $terminalSettingsSource = "$configPath\windows\Terminal\settings.json"
+    $terminalSettingsSource = "$configPath\Terminal\settings.json"
     CopyWithBackup -source $terminalSettingsSource -destination $terminalSettingsPath
 
     Write-Host "Syncing Vim settings..."
-    CopyWithBackup -source "$configPath\windows\_vimrc" -destination "$HOME\_vimrc"
-    CopyWithBackup -source "$configPath\windows\_gvimrc" -destination "$HOME\_gvimrc"
+    CopyWithBackup -source "$configPath\_vimrc" -destination "$HOME\_vimrc"
+    CopyWithBackup -source "$configPath\_gvimrc" -destination "$HOME\_gvimrc"
     Write-Host "Done."
 }
 

@@ -81,7 +81,7 @@ function clone_repo {
     info "Cloning dotfiles repo"
     cd ~
     git clone https://github.com/QuanDo2000/monorepo.git
-    cd quan-monorepo
+    cd monorepo
     DOTFILES_ROOT=$(pwd -P)
     success "Finished cloning dotfiles repo"
 }

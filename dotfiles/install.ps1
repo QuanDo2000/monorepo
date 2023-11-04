@@ -55,7 +55,22 @@ function InstallFont {
     }
 }
 
+function CloneRepo() {
+    $repo = "https://github.com/QuanDo2000/monorepo.git"
+    $destination = "$HOME\Documents\Projects\monorepo"
+
+    if (!(Test-Path $destination)) {
+        git clone $repo $destination
+    }
+    else {
+        git -C $destination pull
+    }
+}
+
 function SyncSettings() {
+    CloneRepo
+    $configPath = "$HOME\Documents\Projects\monorepo"
+
     $targets = @(
         "$HOME\Documents\WindowsPowerShell"
         "$HOME\Documents\PowerShell"
@@ -68,7 +83,7 @@ function SyncSettings() {
     }
 
     foreach ($target in $targets) {
-        Get-ChildItem -Path $PSScriptRoot\windows\Powershell -File | ForEach-Object {
+        Get-ChildItem -Path $configPath\windows\Powershell -File | ForEach-Object {
             $file = $_
             $filename = $_.Name
             $destination = "$target\$filename"
@@ -77,11 +92,11 @@ function SyncSettings() {
     }
 
     $terminalSettingsPath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
-    $terminalSettingsSource = "$PSScriptRoot\windows\Terminal\settings.json"
+    $terminalSettingsSource = "$configPath\windows\Terminal\settings.json"
     CopyWithBackup -source $terminalSettingsSource -destination $terminalSettingsPath
 
-    CopyWithBackup -source "$PSScriptRoot\vimrc.symlink" -destination "$HOME\_vimrc"
-    CopyWithBackup -source "$PSScriptRoot\windows\_gvimrc" -destination "$HOME\_gvimrc"
+    CopyWithBackup -source "$configPath\vimrc.symlink" -destination "$HOME\_vimrc"
+    CopyWithBackup -source "$configPath\windows\_gvimrc" -destination "$HOME\_gvimrc"
 }
 
 InstallPackages

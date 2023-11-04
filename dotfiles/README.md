@@ -5,14 +5,14 @@
 - Linux/MacOS
 
 ```bash
-source <(curl -s https://raw.githubusercontent.com/QuanDo2000/quan-monorepo/main/dotfiles/install)
+source <(curl -s https://raw.githubusercontent.com/QuanDo2000/monorepo/main/dotfiles/install)
 ```
 
 - Windows
 
 ```powershell
 Set-ExecutionPolicy Unrestricted -Scope Process
-iwr -useb https://raw.githubusercontent.com/QuanDo2000/quan-monorepo/main/dotfiles/install.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/QuanDo2000/monorepo/main/dotfiles/install.ps1 | iex
 ```
 
 ## References

@@ -5,13 +5,10 @@ Install-Module -Name PSReadLine -Scope CurrentUser -Force
 
 Update-Module
 
-New-Item -ItemType SymbolicLink -Path "$HOME\Documents\WindowsPowerShell\" -Target "$PSScriptRoot\windows\Powershell\" -Force
-New-Item -ItemType SymbolicLink -Path "$HOME\Documents\PowerShell\" -Target "$PSScriptRoot\windows\Powershell\" -Force
+cmd /c mklink /d $HOME\Documents\WindowsPowerShell\ $PSScriptRoot\windows\Powershell\
+cmd /c mklink /d $HOME\Documents\PowerShell\ $PSScriptRoot\windows\Powershell\
 
-# mklink /d %LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\ %CD%\windows\Terminal
-New-Item -ItemType SymbolicLink -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\" -Target "$PSScriptRoot\windows\Terminal\" -Force
+cmd /c mklink /d $env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\ $PSScriptRoot\windows\Terminal
 
-# mklink %HOMEPATH%\_vimrc %CD%\vimrc.symlink
-New-Item -ItemType SymbolicLink -Path "$HOME\_vimrc" -Target "$PSScriptRoot\vimrc.symlink" -Force
-# mklink %HOMEPATH%\_gvimrc %CD%\windows\_gvimrc
-New-Item -ItemType SymbolicLink -Path "$HOME\_gvimrc" -Target "$PSScriptRoot\windows\_gvimrc" -Force
+cmd /c mklink $HOME\_vimrc $PSScriptRoot\vimrc.symlink
+cmd /c mklink $HOME\_gvimrc $PSScriptRoot\windows\_gvimrc

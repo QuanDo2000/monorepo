@@ -20,8 +20,15 @@ function InstallPackages() {
 
 function InstallFont {
     $url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/FiraCode.zip"
-    $tempFile = "$env:TEMP\FiraCode.zip"
+    $tempFile = "$PSScriptRoot\FiraCode.zip"
     $fontFolder = "$env:LOCALAPPDATA\Microsoft\Windows\Fonts"
+    $fontName = "FiraCodeNerdFont-Regular.ttf"
+    $fontFile = "$fontFolder\$fontName"
+
+    if (Test-Path $fontFile) {
+        Write-Host "FiraCode Nerd Font is already installed."
+        return
+    }
 
     Write-Host "Downloading FiraCode Nerd Font..."
     Invoke-WebRequest -Uri $url -OutFile $tempFile
@@ -43,9 +50,9 @@ function InstallFont {
     }
 
     Write-Host "Cleaning up..."
-    Remove-Item -Path $tempFile
-
-    Write-Host "FiraCode Nerd Font installed successfully."
+    if (Test-Path $tempFile) {
+        Remove-Item -Path $tempFile
+    }
 }
 
 function SyncSettings() {
@@ -77,6 +84,6 @@ function SyncSettings() {
     CopyWithBackup -source "$PSScriptRoot\windows\_gvimrc" -destination "$HOME\_gvimrc"
 }
 
-# InstallPackages
+InstallPackages
 InstallFont
-# SyncSettings
+SyncSettings

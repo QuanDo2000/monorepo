@@ -9,6 +9,8 @@ source <(curl -s https://raw.githubusercontent.com/QuanDo2000/monorepo/main/dotf
 ```
 
 - Windows
+- The Windows installation still contains some bugs and is not fully tested.
+- Run the following in PowerShell as Administrator.
 
 ```powershell
 Set-ExecutionPolicy Unrestricted -Scope Process

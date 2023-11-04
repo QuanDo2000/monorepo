@@ -80,7 +80,7 @@ function install_packages {
 function clone_repo {
     info "Cloning dotfiles repo"
     cd ~
-    git clone https://github.com/QuanDo2000/quan-monorepo.git
+    git clone https://github.com/QuanDo2000/monorepo.git
     cd quan-monorepo
     DOTFILES_ROOT=$(pwd -P)
     success "Finished cloning dotfiles repo"

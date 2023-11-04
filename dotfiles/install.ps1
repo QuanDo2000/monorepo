@@ -1,17 +1,15 @@
-# winget install Microsoft.Powershell Git.Git JanDeDobbeleer.OhMyPosh vim.vim Microsoft.VisualStudioCode --disable-interactivity
+winget install Microsoft.Powershell Git.Git JanDeDobbeleer.OhMyPosh vim.vim Microsoft.VisualStudioCode Microsoft.WindowsTerminal --disable-interactivity
 
-# Install-Module -Name Terminal-Icons -Repository PSGallery -Scope CurrentUser -Force
-# Install-Module -Name PSReadLine -Scope CurrentUser -Force
+Install-Module -Name Terminal-Icons -Repository PSGallery -Scope CurrentUser -Force
+Install-Module -Name PSReadLine -Scope CurrentUser -Force
 
-# Update-Module
+Update-Module
 
 if (!(Test-Path $HOME\Documents\WindowsPowerShell)) { New-Item -ItemType Directory -Path $HOME\Documents\WindowsPowerShell }
 if (!(Test-Path $HOME\Documents\PowerShell)) { New-Item -ItemType Directory -Path $HOME\Documents\PowerShell }
 
 cmd /c mklink $HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 $PSScriptRoot\windows\Powershell\Microsoft.PowerShell_profile.ps1
 cmd /c mklink $HOME\Documents\WindowsPowerShell\Microsoft.VSCode_profile.ps1 $PSScriptRoot\windows\Powershell\Microsoft.VSCode_profile.ps1
-# if (!(Test-Path $HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1)) { New-Item -ItemType SymbolicLink -Path $HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 -Target $PSScriptRoot\windows\PowerShell\Microsoft.PowerShell_profile.ps1 }
-# if (!(Test-Path $HOME\Documents\WindowsPowerShell\Microsoft.VSCode_profile.ps1)) { New-Item -ItemType SymbolicLink -Path $HOME\Documents\WindowsPowerShell\Microsoft.VSCode_profile.ps1 -Target $PSScriptRoot\windows\PowerShell\Microsoft.VSCode_profile.ps1 }
 cmd /c mklink $HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1 $PSScriptRoot\windows\Powershell\Microsoft.PowerShell_profile.ps1
 cmd /c mklink $HOME\Documents\PowerShell\Microsoft.VSCode_profile.ps1 $PSScriptRoot\windows\Powershell\Microsoft.VSCode_profile.ps1
 

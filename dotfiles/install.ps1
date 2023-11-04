@@ -100,7 +100,7 @@ function SyncSettings() {
     CopyWithBackup -source $terminalSettingsSource -destination $terminalSettingsPath
 
     Write-Host "Syncing Vim settings..."
-    CopyWithBackup -source "$configPath\vimrc.symlink" -destination "$HOME\_vimrc"
+    CopyWithBackup -source "$configPath\windows\_vimrc" -destination "$HOME\_vimrc"
     CopyWithBackup -source "$configPath\windows\_gvimrc" -destination "$HOME\_gvimrc"
     Write-Host "Done."
 }

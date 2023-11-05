@@ -3,11 +3,12 @@
 ## Installation
 
 - The Windows installation still contains some bugs and is not fully tested.
+- Might need to run a few times for things to be installed.
 - Run the following in PowerShell as Administrator.
 
 ```powershell
 Set-ExecutionPolicy Unrestricted -Scope Process
-iwr -useb https://raw.githubusercontent.com/QuanDo2000/monorepo/main/dotfiles/install.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/QuanDo2000/monorepo/main/dotfiles/windows/install.ps1 | iex
 ```
 
 ## Notes

@@ -39,7 +39,7 @@
         "defaults": {
             "colorScheme": "One Half Dark",
             "font": {
-                "face": "FiraCode NF",
+                "face": "FiraCode Nerd Font",
                 "size": 14.0
             }
         },

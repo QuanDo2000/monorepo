@@ -6,7 +6,6 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/ys.omp.json" | Invoke-Expre
 # PSReadLine Options
 Import-Module Terminal-Icons
 
-Import-Module PSReadLine
 Set-PSReadLineOption -EditMode Vi
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView

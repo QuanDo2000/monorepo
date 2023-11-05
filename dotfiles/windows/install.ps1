@@ -69,6 +69,11 @@ function CloneRepo() {
     Write-Host "Done."
 }
 
+function SetupGit() {
+    git config --global user.name "Quan Do"
+    git config --global user.email "minhquand3@gmail.com"
+}
+
 function SyncSettings() {
     Write-Host "Syncing settings..."
     $configPath = "$HOME\Documents\Projects\monorepo\dotfiles\windows"
@@ -108,4 +113,5 @@ function SyncSettings() {
 InstallPackages
 InstallFont
 CloneRepo
+SetupGit
 SyncSettings
